@@ -15,26 +15,31 @@ int main (void)
     TM1637Display display;
     display.SDA_DDR = &DDRD;
     display.SDA_PORT = &PORTD;
-    display.SDA_PIN = PIN7;
+    display.SDA_PIN = 7;
     display.SCL_DDR = &DDRD;
     display.SCL_PORT = &PORTD;
-    display.SCL_PIN = PIN6;
+    display.SCL_PIN = 6;
 
     TM1637Display display2;
     display2.SDA_DDR = &DDRB;
     display2.SDA_PORT = &PORTB;
-    display2.SDA_PIN = PIN1;
+    display2.SDA_PIN = 1;
     display2.SCL_DDR = &DDRB;
     display2.SCL_PORT = &PORTB;
-    display2.SCL_PIN = PIN0;
+    display2.SCL_PIN = 0;
 
     DHT_sensor DHT11;
     DHT11.SENSOR_DDR = &DDRB;
     DHT11.SENSOR_PORT = &PORTB;
-    DHT11.SENSOR_PIN = PIN4;
-    DHT11.SENSOR_PINR = & PINB;
+    DHT11.SENSOR_PINR = &PINB;
+    DHT11.SENSOR_PIN = 4;
 
     DHT_data data;
+    data.temperatureI = 0;
+    data.temperatureD = 0;
+    data.humidityI = 0;
+    data.humidityD = 0;
+    data.checksum = 0;
 
     DHT11_init(DHT11);
     TM1637Display_init(display);
@@ -44,8 +49,8 @@ int main (void)
     {
         _delay_ms(5000);
         DHT11_read(DHT11, &data);
-        TM1637Display_show(display, data.temperatureI);
-        TM1637Display_show(display2, data.humidityI);
+        TM1637Display_show(display, data.humidityI);
+        TM1637Display_show(display2, data.temperatureI);
     }
 
     return 0;
