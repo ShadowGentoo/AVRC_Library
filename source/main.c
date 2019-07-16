@@ -26,12 +26,19 @@ int main (void)
 
     DHT11_init(DHT11);  
 
+    int i = -40;
     while (1)
     {
+        /* 
         _delay_ms(5000);
-        //DHT11_read(DHT11, &data);
-        //USART_transmit_number(data.temperatureI);
-        USART_transmit_string("Hello World!\n");
+        DHT11_read(DHT11, &data);
+        USART_transmit_string("temperature: ");
+        USART_transmit_number(data.temperatureI);
+        */
+       USART_transmit_number(i);
+       //DHT11_read(DHT11, &data);
+       _delay_ms(1000);
+       i++;
     }
 
     return 0;

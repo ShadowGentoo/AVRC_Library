@@ -37,11 +37,12 @@ void USART_transmit_string(const char * message)
     unsigned int symbolNumber = 0;
 
     //transmit symbols, until we reach end of string
-    while (message[symbolNumber] != '\0')
+    do
     {
         USART_transmit(message[symbolNumber]);
         symbolNumber++;
     }
+    while (message[symbolNumber] != '\0');
 }
 
 char USART_receive(void)
@@ -56,35 +57,36 @@ char USART_receive(void)
 void USART_transmit_number(const int message)
 {
     int number = message;
-    unsigned char index = 0, reverseIndex = 0;
-    char rev_msg[7] = { 0, 0, 0, 0, 0 ,0, 0};
-    char msg[7] = {0, 0, 0, 0, 0, 0, 0};
+    int reverseIndex = 0;
+    char rev_msg[7] = { 0, 0, 0, 0, 0 ,0, '\0'};
+    char msg[7] = {0, 0, 0, 0, 0, 0, '\0'};
     char symbol;
 
-    if (number < 0)
+    if (message < 0)
     {
-        msg[0] = '-';
-        rev_msg[0] = '-';
-        index = 1;
-        reverseIndex = 1;
         number *= -1;
-    }    
+    }
 
     do
     {
         symbol = (number % 10) + 48;
-        number = number / 10;
-
-        rev_msg[index] = symbol;
+        rev_msg[reverseIndex] = symbol;
         reverseIndex++;
-    } while ((number != 0) || (reverseIndex == 6));
-    //get reversed number atm
 
-    while (index < reverseIndex)
+        number = (number / 10);
+    } while (number != 0);
+
+    if (message < 0)
     {
-        msg[index] = rev_msg[reverseIndex-index];
-        index++;
+        rev_msg[reverseIndex] = '-';
+        reverseIndex++;
+    }
+
+    for (int i = 0; i < reverseIndex; i++)
+    {
+        msg[i] = rev_msg[(reverseIndex-1-i)];
     }
     
     USART_transmit_string(msg);
+
 }
