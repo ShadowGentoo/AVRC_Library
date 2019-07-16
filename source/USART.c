@@ -3,6 +3,7 @@
 
 //TODO write something like printf(format, ... args)
 
+
 void USART_init(const unsigned long cpuFreq, const unsigned long baudRate, const parity parityMode) 
 {
     //calculating ubrr value
@@ -31,11 +32,6 @@ void USART_transmit(const char data)
     //TODO check (throught TX flag in UCSR0A) if data is gone
 }
 
-void USART_transmit_number(const unsigned int message)
-{
-    
-}
-
 void USART_transmit_string(const char * message)
 {
     unsigned int symbolNumber = 0;
@@ -50,9 +46,45 @@ void USART_transmit_string(const char * message)
 
 char USART_receive(void)
 {
-    //wait for data to be received (if you are not using interruptions for example >_<)
+    //wait for data to be received
     while (!(UCSR0A & (1 << RXC0)));
     
     //take your data
     return UDR0;
+}
+
+void USART_transmit_number(const int message)
+{
+    int number = message;
+    unsigned char index = 0, reverseIndex = 0;
+    char rev_msg[7] = { 0, 0, 0, 0, 0 ,0, 0};
+    char msg[7] = {0, 0, 0, 0, 0, 0, 0};
+    char symbol;
+
+    if (number < 0)
+    {
+        msg[0] = '-';
+        rev_msg[0] = '-';
+        index = 1;
+        reverseIndex = 1;
+        number *= -1;
+    }    
+
+    do
+    {
+        symbol = (number % 10) + 48;
+        number = number / 10;
+
+        rev_msg[index] = symbol;
+        reverseIndex++;
+    } while ((number != 0) || (reverseIndex == 6));
+    //get reversed number atm
+
+    while (index < reverseIndex)
+    {
+        msg[index] = rev_msg[reverseIndex-index];
+        index++;
+    }
+    
+    USART_transmit_string(msg);
 }

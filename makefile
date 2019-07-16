@@ -16,8 +16,9 @@ main :
 	$(CC) $(CFLAGS) ./source/main.c $(dependecy) -o $(DIR)main.o 
 	avr-objcopy -O ihex $(DIR)main.o $(DIR)main.hex
 
+#use dmesg to see, where your arduino is. In can be /dev/ttyUSB or /dev/ttyACM
 flash : main
-	avrdude -p atmega328p -c arduino -U flash:w:$(DIR)main.hex:i -P /dev/ttyUSB0
+	avrdude -p atmega328p -c arduino -U flash:w:$(DIR)main.hex:i -P /dev/ttyACM0
 
 clean :
 	rm -rf $(DIR)*
