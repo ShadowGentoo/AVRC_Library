@@ -35,10 +35,13 @@ int main (void)
         USART_transmit_string("temperature: ");
         USART_transmit_number(data.temperatureI);
         */
-       USART_transmit_number(i);
-       //DHT11_read(DHT11, &data);
-       _delay_ms(1000);
-       i++;
+       
+       DHT11_read(DHT11, &data);
+       USART_transmit_string("temperature: ");
+       USART_transmit_number((int) data.temperatureI);
+       USART_transmit_string("humidity: ");
+       USART_transmit_number((int) data.humidityI);
+       _delay_ms(2000);
     }
 
     return 0;

@@ -51,6 +51,7 @@ int DHT11_read(DHT_sensor sensor, DHT_data * data)
     */
     //start of tight time section
     //cli();
+    *(sensor.SENSOR_DDR) |= (1 << sensor.SENSOR_PIN);
 
     *(sensor.SENSOR_PORT) &= ~(1 << sensor.SENSOR_PIN);
     //need to wait at least 18 ms

@@ -37,12 +37,14 @@ void USART_transmit_string(const char * message)
     unsigned int symbolNumber = 0;
 
     //transmit symbols, until we reach end of string
-    do
+    while (message[symbolNumber] != '\0')
     {
         USART_transmit(message[symbolNumber]);
         symbolNumber++;
     }
-    while (message[symbolNumber] != '\0');
+
+    USART_transmit('\0');
+    
 }
 
 char USART_receive(void)
