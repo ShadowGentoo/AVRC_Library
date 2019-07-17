@@ -42,8 +42,6 @@ void USART_transmit_string(const char * message)
         USART_transmit(message[symbolNumber]);
         symbolNumber++;
     }
-
-    USART_transmit('\0');
     
 }
 
